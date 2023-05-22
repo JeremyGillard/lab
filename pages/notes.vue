@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Hello World!</h1>
-    <Bloc />
+    <h2>Notes</h2>
   </div>
 </template>
 
