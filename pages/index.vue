@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1>Hello World!</h1>
-    <Bloc />
+    <Bloc title="First Bloc" />
+    <Bloc title="Second Bloc" />
+    <Bloc title="Third Bloc" />
   </div>
 </template>
 
