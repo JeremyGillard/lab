@@ -4,6 +4,7 @@
       <BoundingRect :coords="coords" />
       <BoundingPoints :coords="coords" />
       <BoundingPaddedRect :coords="coords" :padding="50" />
+      <BoundingPaddedPoints :coords="coords" :padding="50" />
     </svg>
     <AppSection ref="appsection" />
   </main>

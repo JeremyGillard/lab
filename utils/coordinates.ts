@@ -10,6 +10,26 @@ export interface IBoundingPoints {
     bottomLeft: IPoint;
 }
 
+export interface IBoundingBevelledPoints {
+    top: {
+        left: IPoint;
+        right: IPoint;
+    };
+    right: {
+        top: IPoint;
+        bottom: IPoint;
+    };
+    bottom: {
+        left: IPoint;
+        right: IPoint;
+    };
+    left: {
+        top: IPoint;
+        bottom: IPoint;
+    };
+    
+}
+
 export interface IBoundingCoordinates {
     top: number;
     right: number;
@@ -81,7 +101,7 @@ export function getBoundingPaddedPoints(boundingCoordinates: IBoundingCoordinate
     }
 }
 
-export function getSectionBevelledCoordinates(
+export function getBoundingBevelledCoordinates(
     paddedCoordinates: IBoundingPaddedCoordinates,
     bevel: number
 ): IBoundingBevelledCoordinates {
@@ -92,4 +112,51 @@ export function getSectionBevelledCoordinates(
       left: paddedCoordinates.left + bevel,
       bevel: bevel,
     };
+}
+
+export function getBoundingBevelledPoints(boundingCoordinates: IBoundingCoordinates, padding: number, bevel: number): IBoundingBevelledPoints {
+    const boundingPaddedCoordinates = getBoungindPaddedCoordinates(boundingCoordinates, padding);
+    const boundingBevelledCoordinates = getBoundingBevelledCoordinates(boundingPaddedCoordinates, bevel);
+    return {
+        top: {
+            left: {
+                x: boundingBevelledCoordinates.left,
+                y: boundingPaddedCoordinates.top
+            },
+            right: {
+                x: boundingBevelledCoordinates.right,
+                y: boundingPaddedCoordinates.top
+            },
+        },
+        right: {
+            top: {
+                x: boundingPaddedCoordinates.right,
+                y: boundingBevelledCoordinates.top
+            },
+            bottom: {
+                x: boundingPaddedCoordinates.right,
+                y: boundingBevelledCoordinates.bottom
+            },
+        },
+        bottom: {
+            left: {
+                x: boundingBevelledCoordinates.left,
+                y: boundingPaddedCoordinates.bottom
+            },
+            right: {
+                x: boundingBevelledCoordinates.right,
+                y: boundingPaddedCoordinates.bottom
+            },
+        },
+        left: {
+            top: {
+                x: boundingPaddedCoordinates.left,
+                y: boundingBevelledCoordinates.top
+            },
+            bottom: {
+                x: boundingPaddedCoordinates.left,
+                y: boundingBevelledCoordinates.bottom
+            },
+        }
+    }
 }
