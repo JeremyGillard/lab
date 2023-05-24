@@ -1,6 +1,6 @@
 <template>
   <div class="the-line">
-    <div ref="area">
+    <div class="area" ref="area">
       <slot></slot>
     </div>
     <pre class="marker">{{ areaBounding }}</pre>
@@ -13,7 +13,10 @@
 </template>
 
 <script setup lang="ts">
-import { useElementBounding } from "@vueuse/core";
+import { useElementBounding, useWindowSize } from "@vueuse/core";
+
+const { width: windowWidth, height: windowHeight } = useWindowSize();
+const windowHeightInPixel = computed(() => `${windowHeight.value}px`);
 
 const area = ref<HTMLElement | null>(null);
 const areaBounding = useElementBounding(area);
@@ -25,7 +28,7 @@ const midArea = computed(() => {
 });
 
 const d = computed(() => {
-  return `M${midArea.value} ${areaBounding.top.value} V${areaBounding.height.value}`;
+  return `M${midArea.value} ${areaBounding.top.value} L${midArea.value} ${areaBounding.bottom.value}`;
 });
 </script>
 
@@ -51,7 +54,7 @@ const d = computed(() => {
 }
 .svg {
   width: 100%;
-  height: 100vh;
+  height: v-bind(windowHeightInPixel);
 }
 .path {
   stroke: black;
