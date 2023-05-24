@@ -1,57 +1,51 @@
 <template>
-  <main>
-    <svg class="svg">
-      <BoundingRect :coords="coords" />
-      <BoundingPoints :coords="coords" />
-      <BoundingPaddedRect :coords="coords" :padding="50" />
-      <BoundingPaddedPoints :coords="coords" :padding="50" />
-      <BoundingBevelledPoints :coords="coords" :padding="100" :bevel="40" />
-    </svg>
-    <AppSection ref="appsection" />
+  <main ref="main" class="home">
+    <TheLine>
+      <div class="grid-container">
+        <Block
+          :size="squaresSize"
+          v-for="(block, index) in blocks"
+          :key="index"
+          class="square"
+        />
+      </div>
+    </TheLine>
+    <!-- <pre>{{ mainBounding }}</pre> -->
   </main>
 </template>
 
 <script setup lang="ts">
-interface ISectionCoordinates {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
+import { useElementBounding } from "@vueuse/core";
 
-const appsection = ref(null);
-const coords = ref<ISectionCoordinates>({
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: 0,
-});
+const squaresSize = ref<number>(120);
+const squaresSizeCSS = computed(() => `${squaresSize.value}px`);
 
-watchEffect(() => {
-  if (appsection.value) {
-    const { top, right, bottom, left } = appsection.value.elementBounding;
-    coords.value.top = top.value;
-    coords.value.right = right.value;
-    coords.value.bottom = bottom.value;
-    coords.value.left = left.value;
-  }
+const main = ref<HTMLElement | null>(null);
+const mainBounding = useElementBounding(main);
+const nWidth = computed(() =>
+  Math.floor(mainBounding.width.value / squaresSize.value)
+);
+const nHeight = computed(() =>
+  Math.floor(mainBounding.height.value / squaresSize.value)
+);
+const blocks = computed(() => {
+  return nWidth.value * nHeight.value;
 });
 </script>
 
 <style scoped>
-main {
+.home {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: -1;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(v-bind(nWidth), v-bind(squaresSizeCSS));
+  justify-content: center;
+  align-items: start;
 }
 </style>

@@ -28,6 +28,8 @@
       r="4"
     />
     <circle class="circle" :cx="ps.left.top.x" :cy="ps.left.top.y" r="4" />
+    <text x="65" y="55">bevel: {{ bevel }}</text>
+    <text x="65" y="75">padding: {{ padding }}</text>
   </g>
 </template>
 
